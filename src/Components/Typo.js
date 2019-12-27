@@ -13,7 +13,7 @@ const Title = styled.h1`
 
 const Paragraph = styled.p`
   margin-top: 0;
-  margin-bottom: 0;
+  margin-bottom: 5px;
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
   font-size: 13px;

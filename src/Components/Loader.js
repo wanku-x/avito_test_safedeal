@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import styled, { keyframes } from 'styled-components';
 
 const Overlay = styled.div`
+  z-index: 10000;
   position: fixed;
   top: 0;
   left: 0;

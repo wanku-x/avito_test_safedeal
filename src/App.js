@@ -8,6 +8,7 @@ import Picture from './Components/Picture';
 import Loader from './Components/Loader';
 import { requestGET } from './Requests';
 import Modal from './Components/Modal';
+import MoreInfo from './Components/MoreInfo';
 
 setConfiguration({
   gutterWidth: 20,
@@ -19,7 +20,7 @@ const ColStyled = styled(Col)`
 
 const App = () => {
   const [photos, setPhotos] = useState([]);
-  const [moreInfo, setMoreInfo] = useState({});
+  const [photoId, setPhotoId] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -28,7 +29,7 @@ const App = () => {
 
     requestGET(
       'https://boiling-refuge-66454.herokuapp.com/images',
-      { signal: abortController.signal },
+      abortController.signal,
     ).then((res) => {
       setPhotos(res);
     }).catch((err) => {
@@ -42,23 +43,8 @@ const App = () => {
     };
   }, []);
 
-  const getPhotoInfo = (id) => {
-    setLoading(true);
-    setMoreInfo({});
-
-    requestGET(
-      `https://boiling-refuge-66454.herokuapp.com/images/${id}`,
-    ).then((res) => {
-      setMoreInfo(res);
-    }).catch((err) => {
-      console.log(err);
-    }).finally(() => {
-      setLoading(false);
-    });
-  };
-
   const openModal = (id) => {
-    getPhotoInfo(id);
+    setPhotoId(id);
     setModalIsOpen(true);
   };
 
@@ -80,9 +66,10 @@ const App = () => {
       <Footer />
       <Modal
         open={modalIsOpen}
-        content={JSON.stringify(moreInfo)}
         onClose={() => setModalIsOpen(false)}
-      />
+      >
+        <MoreInfo photoId={photoId} />
+      </Modal>
       <Loader visible={loading} />
     </>
   );
